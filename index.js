@@ -8,11 +8,15 @@ app.use(cors());
 
 // Lee la API key de las "Environment Variables" de Render
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
 
 // Endpoint de prueba
 app.get('/', (req, res) => {
   res.send('¡El proxy de Gemini (Render) está vivo y listo!');
+});
+
+app.get('/status', (req, res) => {
+  res.json({ status: 'ok', message: 'Gemini proxy activo y listo' });
 });
 
 // Endpoint principal
@@ -37,4 +41,5 @@ app.post('/llamar-a-gemini', async (req, res) => {
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
   console.log(`Servidor escuchando en el puerto ${port}`);
+
 });
