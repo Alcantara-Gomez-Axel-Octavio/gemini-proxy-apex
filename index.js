@@ -10,7 +10,7 @@ app.use(cors());
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 // Usa un modelo que sí exista en v1beta
-const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
+const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-latest" });
 
 // Endpoint de prueba
 app.get('/', (req, res) => {
@@ -45,3 +45,4 @@ const port = process.env.PORT || 3000;
 app.listen(port, () => {
   console.log(`Servidor escuchando en el puerto ${port}`);
 });
+
