@@ -3,11 +3,13 @@ const cors = require('cors');
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 
 const app = express();
-app.use(express.json()); 
-app.use(cors()); 
+app.use(express.json());
+app.use(cors());
 
-// Lee la API key de las "Environment Variables" de Render
+// Configura la API key de Render
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+
+// Usa un modelo que sí exista en v1beta
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
 
 // Endpoint de prueba
@@ -15,6 +17,7 @@ app.get('/', (req, res) => {
   res.send('¡El proxy de Gemini (Render) está vivo y listo!');
 });
 
+// Endpoint de estado
 app.get('/status', (req, res) => {
   res.json({ status: 'ok', message: 'Gemini proxy activo y listo' });
 });
@@ -33,7 +36,7 @@ app.post('/llamar-a-gemini', async (req, res) => {
     res.json({ respuesta: text });
   } catch (error) {
     console.error('Error llamando a Gemini:', error);
-    res.status(500).json({ error: 'Error interno del servidor proxy' });
+    res.status(500).json({ error: 'Error interno del servidor proxy', details: error.message });
   }
 });
 
@@ -41,5 +44,4 @@ app.post('/llamar-a-gemini', async (req, res) => {
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
   console.log(`Servidor escuchando en el puerto ${port}`);
-
 });
